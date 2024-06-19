@@ -1,4 +1,5 @@
 import quickSort from "./quickSort.js";
+import removeDuplicates from "./removeDuplicates.js";
 
 let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
@@ -12,6 +13,5 @@ const tree = () => {
 };
 
 const buildTree = (array) => {
-  const sortedArr = quickSort(array);
-  console.log(sortedArr);
+  const uniqueSortedArr = removeDuplicates(quickSort(array));
 };
