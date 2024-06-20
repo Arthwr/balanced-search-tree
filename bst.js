@@ -49,6 +49,54 @@ class Tree {
     }
   }
 
+  deleteItem(value) {
+    if (this.root === null) return null;
+
+    let prevNode = null;
+    let currentNode = this.root;
+
+    while (currentNode !== null && currentNode.data !== value) {
+      prevNode = currentNode;
+      if (value < currentNode.data) {
+        currentNode = currentNode.left;
+      } else {
+        currentNode = currentNode.right;
+      }
+    }
+
+    // Node to deleted not found
+    if (currentNode === null) return;
+
+    // Case 1: Node with no children (leaf node)
+    if (currentNode.right === null && currentNode.left === null) {
+      if (currentNode === this.root) {
+        this.root = null;
+      } else if (prevNode.left === currentNode) {
+        prevNode.left = null;
+      } else {
+        prevNode.right = null;
+      }
+
+      return;
+    }
+
+    // Case 2: Node with at least 1 child
+    if (currentNode.left === null || currentNode.right === null) {
+      const child =
+        currentNode.left !== null ? currentNode.left : currentNode.right;
+      if (currentNode === this.root) return (this.root = child);
+      if (prevNode.left === currentNode) {
+        prevNode.left = child;
+      } else {
+        prevNode.right = child;
+      }
+  
+      return;
+    }
+
+    // Case 3: Node with two children
+  }
+
   printTree(node = this.root, prefix = "", isLeft = true) {
     if (node === null) return;
     if (node.right !== null) {
@@ -64,7 +112,13 @@ class Tree {
 const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 const myTree = new Tree(arr);
+
+myTree.insert(44);
+myTree.insert(20);
+myTree.insert(14);
 myTree.printTree();
-myTree.insert(40);
-myTree.insert(22);
+
+myTree.deleteItem(20);
+myTree.printTree();
+myTree.deleteItem(5);
 myTree.printTree();
