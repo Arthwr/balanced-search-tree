@@ -49,12 +49,13 @@ class Tree {
     }
   }
 
-  deleteItem(value) {
+  delete(value) {
     if (this.root === null) return null;
 
     let prevNode = null;
     let currentNode = this.root;
 
+    // Traverse the tree to find node to be deleted and its parent
     while (currentNode !== null && currentNode.data !== value) {
       prevNode = currentNode;
       if (value < currentNode.data) {
@@ -90,11 +91,29 @@ class Tree {
       } else {
         prevNode.right = child;
       }
-  
+
       return;
     }
 
     // Case 3: Node with two children
+    // Find the in-order successor (smallest in the right subtree)
+    let successor = currentNode.right;
+    let successorParent = currentNode;
+
+    while (successor.left !== null) {
+      successorParent = successor;
+      successor = successor.left;
+    }
+
+    // Replace current node's data with successor's data
+    currentNode.data = successor.data;
+
+    // Handle the case where successor has a right child
+    if (successorParent.left === successor) {
+      successorParent.left = successor.right;
+    } else {
+      successorParent.right = successor.right;
+    }
   }
 
   printTree(node = this.root, prefix = "", isLeft = true) {
@@ -117,8 +136,5 @@ myTree.insert(44);
 myTree.insert(20);
 myTree.insert(14);
 myTree.printTree();
-
-myTree.deleteItem(20);
-myTree.printTree();
-myTree.deleteItem(5);
+myTree.delete(8);
 myTree.printTree();
