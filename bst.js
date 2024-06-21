@@ -134,24 +134,37 @@ class BinaryTree {
 
   levelOrder(callback) {
     if (!this.root) return [];
-
     const list = [];
     const queue = [this.root];
 
     while (queue.length > 0) {
-      let item = queue.shift();
+      let node = queue.shift();
 
       if (typeof callback === "function") {
-        callback(item);
+        callback(node);
       } else {
-        list.push(item.data);
+        list.push(node.data);
       }
 
-      if (item.left) queue.push(item.left);
-      if (item.right) queue.push(item.right);
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
     }
 
     return list;
+  }
+
+  levelOrderRec(callback, queue = [this.root], list = []) {
+    if (!this.root) return [];
+
+    if (queue.length === 0) return list;
+
+    const node = queue.shift();
+    typeof callback === "function" ? callback(node) : list.push(node.data);
+
+    if (node.left) queue.push(node.left);
+    if (node.right) queue.push(node.right);
+
+    return this.levelOrderRec(callback, queue, list);
   }
 
   printTree(node = this.root, prefix = "", isLeft = true) {
@@ -170,3 +183,6 @@ const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 const myTree = new BinaryTree(arr);
 myTree.printTree();
+const foo = myTree.levelOrder();
+const bar = myTree.levelOrderRec();
+console.log(bar);
