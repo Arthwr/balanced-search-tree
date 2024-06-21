@@ -9,18 +9,18 @@ class Node {
   }
 }
 
-class Tree {
+class BinaryTree {
   constructor(array) {
     this.sortedArray = quickSort(removeDuplicates(array));
-    this.root = this.buildTree(this.sortedArray);
+    this.root = this.#buildTree(this.sortedArray);
   }
 
-  buildTree(array, start = 0, end = array.length - 1) {
+  #buildTree(array, start = 0, end = array.length - 1) {
     if (start > end) return null;
     const rootIndex = Math.floor((start + end) / 2);
     const treeNode = new Node(array[rootIndex]);
-    treeNode.left = this.buildTree(array, start, rootIndex - 1);
-    treeNode.right = this.buildTree(array, rootIndex + 1, end);
+    treeNode.left = this.#buildTree(array, start, rootIndex - 1);
+    treeNode.right = this.#buildTree(array, rootIndex + 1, end);
     return treeNode;
   }
 
@@ -132,6 +132,28 @@ class Tree {
     return currentNode !== null ? currentNode : null;
   }
 
+  levelOrder(callback) {
+    if (!this.root) return [];
+
+    const list = [];
+    const queue = [this.root];
+
+    while (queue.length > 0) {
+      let item = queue.shift();
+
+      if (typeof callback === "function") {
+        callback(item);
+      } else {
+        list.push(item.data);
+      }
+
+      if (item.left) queue.push(item.left);
+      if (item.right) queue.push(item.right);
+    }
+
+    return list;
+  }
+
   printTree(node = this.root, prefix = "", isLeft = true) {
     if (node === null) return;
     if (node.right !== null) {
@@ -146,11 +168,5 @@ class Tree {
 
 const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
-const myTree = new Tree(arr);
-
-myTree.insert(44);
-myTree.insert(20);
-myTree.insert(14);
+const myTree = new BinaryTree(arr);
 myTree.printTree();
-const result = myTree.find(324);
-console.log(result);
