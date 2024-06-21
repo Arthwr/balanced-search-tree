@@ -114,6 +114,22 @@ class Tree {
     } else {
       successorParent.right = successor.right;
     }
+
+    if (prevNode === null) {
+      this.root = successor;
+    }
+  }
+
+  find(value) {
+    let currentNode = this.root;
+    while (currentNode !== null && currentNode.data !== value) {
+      if (value < currentNode.data) {
+        currentNode = currentNode.left;
+      } else {
+        currentNode = currentNode.right;
+      }
+    }
+    return currentNode !== null ? currentNode : null;
   }
 
   printTree(node = this.root, prefix = "", isLeft = true) {
@@ -136,5 +152,5 @@ myTree.insert(44);
 myTree.insert(20);
 myTree.insert(14);
 myTree.printTree();
-myTree.delete(8);
-myTree.printTree();
+const result = myTree.find(324);
+console.log(result);
