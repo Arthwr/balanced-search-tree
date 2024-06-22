@@ -132,7 +132,7 @@ class BinaryTree {
     return currentNode !== null ? currentNode : null;
   }
 
-  levelOrder(callback) {
+  levelOrder(callback = null) {
     if (!this.root) return [];
     const list = [];
     const queue = [this.root];
@@ -153,7 +153,7 @@ class BinaryTree {
     return list;
   }
 
-  levelOrderRec(callback, queue = [this.root], list = []) {
+  levelOrderRec(callback = null, queue = [this.root], list = []) {
     if (!this.root) return [];
 
     if (queue.length === 0) return list;
@@ -165,6 +165,39 @@ class BinaryTree {
     if (node.right) queue.push(node.right);
 
     return this.levelOrderRec(callback, queue, list);
+  }
+
+  inOrder(callback = null, node = this.root, list = []) {
+    if (!this.root) return null;
+    if (node === null) return;
+
+    this.inOrder(callback, node.left, list);
+    typeof callback === "function" ? callback(node) : list.push(node.data);
+    this.inOrder(callback, node.right, list);
+
+    return list;
+  }
+
+  preOrder(callback = null, node = this.root, list = []) {
+    if (!this.root) return null;
+    if (node === null) return;
+
+    typeof callback === "function" ? callback(node) : list.push(node.data);
+    this.preOrder(callback, node.left, list);
+    this.preOrder(callback, node.right, list);
+
+    return list;
+  }
+
+  postOrder(callback = null, node = this.root, list = []) {
+    if (!this.root) return null;
+    if (node === null) return;
+
+    this.postOrder(callback, node.left, list);
+    this.postOrder(callback, node.right, list);
+    typeof callback === "function" ? callback(node) : list.push(node.data);
+
+    return list;
   }
 
   printTree(node = this.root, prefix = "", isLeft = true) {
@@ -183,6 +216,9 @@ const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 const myTree = new BinaryTree(arr);
 myTree.printTree();
-const foo = myTree.levelOrder();
-const bar = myTree.levelOrderRec();
-console.log(bar);
+const preorder = myTree.preOrder();
+console.log(preorder);
+const inorder = myTree.inOrder();
+console.log(inorder);
+const postorder = myTree.postOrder();
+console.log(postorder);
