@@ -9,7 +9,7 @@ class Node {
   }
 }
 
-class BinaryTree {
+export default class BinaryTree {
   constructor(array) {
     this.sortedArray = quickSort(removeDuplicates(array));
     this.root = this.#buildTree(this.sortedArray);
@@ -259,5 +259,3 @@ class BinaryTree {
     }
   }
 }
-
-const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
