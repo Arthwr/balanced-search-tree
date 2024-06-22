@@ -200,6 +200,54 @@ class BinaryTree {
     return list;
   }
 
+  height(node = this.root) {
+    if (node === null) return -1;
+
+    let leftHeight = this.height(node.left);
+    let rightHeight = this.height(node.right);
+
+    return Math.max(leftHeight, rightHeight) + 1;
+  }
+
+  depth(node) {
+    if (node === null) return -1;
+
+    let depth = 0;
+    let currentNode = this.root;
+
+    while (currentNode !== null && currentNode.data !== node.data) {
+      depth++;
+
+      if (node.data < currentNode.data) {
+        currentNode = currentNode.left;
+      } else {
+        currentNode = currentNode.right;
+      }
+    }
+
+    if (currentNode === null) return -1;
+
+    return depth;
+  }
+
+  isBalanced(node = this.root) {
+    if (node === null) return true;
+
+    const leftHeight = this.height(node.left);
+    const rightHeight = this.height(node.right);
+
+    if (Math.abs(leftHeight - rightHeight) > 1) {
+      return false;
+    }
+
+    return this.isBalanced(node.left) && this.isBalanced(node.right);
+  }
+
+  rebalance() {
+    const tree = this.inOrder();
+    this.root = this.#buildTree(tree);
+  }
+
   printTree(node = this.root, prefix = "", isLeft = true) {
     if (node === null) return;
     if (node.right !== null) {
@@ -213,12 +261,3 @@ class BinaryTree {
 }
 
 const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-
-const myTree = new BinaryTree(arr);
-myTree.printTree();
-const preorder = myTree.preOrder();
-console.log(preorder);
-const inorder = myTree.inOrder();
-console.log(inorder);
-const postorder = myTree.postOrder();
-console.log(postorder);
